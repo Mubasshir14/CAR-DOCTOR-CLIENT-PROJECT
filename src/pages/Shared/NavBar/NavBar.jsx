@@ -1,19 +1,37 @@
 import { Link, NavLink } from "react-router-dom";
-import logo from '../../../assets/logo.svg'
-import { CiShoppingCart } from "react-icons/ci";
-import { CiSearch } from "react-icons/ci";
+import logo from '../../../assets/logo.svg';
+import { CiShoppingCart, CiSearch } from "react-icons/ci";
+import { useContext } from "react";
+import { AuthContext } from "../../../providers/AuthProvider";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const NavBar = () => {
-    
+    const { user, logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {
+                toast.success('Logout Successfully Completed');
+            })
+            .catch(error => {
+                console.log(error.message);
+                toast.error('Logout Failed');
+            });
+    };
 
     const navItems = (
         <>
             <li className="font-bold"><NavLink to='/'>Home</NavLink></li>
             <li className="font-bold"><NavLink to='/about'>About</NavLink></li>
-            <li className="font-bold"><NavLink to='/login'>Login</NavLink></li>
             <li className="font-bold"><NavLink to='/services'>Services</NavLink></li>
             <li className="font-bold"><NavLink to='/blog'>Blog</NavLink></li>
-            
+            {user?.email ? (<>
+                <li className="font-bold"><button onClick={handleLogOut}>Log Out</button></li>
+                <li className="font-bold"><NavLink to='/bookings'>My Bookings</NavLink></li>
+            </>) : (
+                <li className="font-bold"><NavLink to='/login'>Login</NavLink></li>
+            )}
         </>
     );
 
@@ -41,8 +59,8 @@ const NavBar = () => {
             </div>
             <div className="navbar-end class gap-6">
                 <div className=" flex items-center justify-between  gap-6 font-bold text-2xl">
-                  <CiShoppingCart className="btn-outline text-[#FF3811] hover:btn-accent hover:p-4 hover:rounded-full"/>
-                  <CiSearch className="btn-outline text-[#FF3811] hover:btn-accent hover:p-4 hover:rounded-full"/>
+                    <CiShoppingCart className="btn-outline text-[#FF3811] hover:btn-accent hover:p-4 hover:rounded-full" />
+                    <CiSearch className="btn-outline text-[#FF3811] hover:btn-accent hover:p-4 hover:rounded-full" />
                 </div>
                 <button className="btn btn-outline border-[#FF3811] text-[#FF3811]">Appointment</button>
             </div>

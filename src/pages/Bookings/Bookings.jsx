@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import BookinngRow from "./BookinngRow";
 import Swal from 'sweetalert2';
+import axios from "axios";
 
 const Bookings = () => {
     const { user } = useContext(AuthContext);
@@ -10,19 +11,26 @@ const Bookings = () => {
     const url = `http://localhost:5000/bookings?email=${user?.email}`;
 
     useEffect(() => {
-        fetch(url)
+        axios.get(url, { withCredentials: true })
             .then(res => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
-            .then(data => {
-                setBookings(data);
+                setBookings(res.data);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
+        // fetch(url)
+        //     .then(res => {
+        //         if (!res.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         return res.json();
+        //     })
+        //     .then(data => {
+        //         setBookings(data);
+        //     })
+        //     .catch(error => {
+        //         console.error('There was a problem with the fetch operation:', error);
+        //     });
     }, [url]);
 
 

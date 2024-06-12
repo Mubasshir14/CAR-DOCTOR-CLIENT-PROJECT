@@ -3,25 +3,40 @@ import login from '../../assets/images/login/login.svg';
 import { FaSquareFacebook } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Login = () => {
     const { signIn } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    console.log(location);
 
     const handleLogIn = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password);
+        // console.log(email, password);
 
         signIn(email, password)
             .then(result => {
-                console.log(result.user);
-                toast.success('Login Successfully Completed');
+                const loggedInUser = result.user;
+                console.log(loggedInUser);
+
+                const user = { email };
+                // get access token
+                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.success) {
+                            toast.success('Login Successfully Completed');
+                            navigate(location?.state ? location?.state : '/')
+                        }
+                    })
             })
             .catch(error => {
                 console.log(error.message);

@@ -1,13 +1,15 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from '../../../assets/logo.svg';
 import { CiShoppingCart, CiSearch } from "react-icons/ci";
-import { useContext } from "react";
-import { AuthContext } from "../../../providers/AuthProvider";
+// import { useContext } from "react";
+// import { AuthContext } from "../../../providers/AuthProvider";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useAuth from "../../../hooks/useAuth";
 
 const NavBar = () => {
-    const { user, logOut } = useContext(AuthContext);
+    // const { user, logOut } = useContext(AuthContext);
+    const {user, logOut} = useAuth();
 
     const handleLogOut = () => {
         logOut()

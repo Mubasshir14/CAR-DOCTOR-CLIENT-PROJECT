@@ -3,16 +3,18 @@
 import { SlCalender } from "react-icons/sl";
 import { MdAddCall } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import ServiceCard from "./ServiceCard";
+import useServices from "../../../hooks/useServices";
 
 const Services = () => {
-    const [services, setServices] = useState([])
-    useEffect(()=>{
-        fetch('http://localhost:5000/services')
-        .then(res => res.json())
-        .then(data => setServices(data))
-    },[])
+    const services = useServices();
+    // const [services, setServices] = useState([])
+    // useEffect(()=>{
+    //     fetch('http://localhost:5000/services')
+    //     .then(res => res.json())
+    //     .then(data => setServices(data))
+    // },[])
     return (
         <div>
             <div className="text-center  space-y-4 mb-8">
